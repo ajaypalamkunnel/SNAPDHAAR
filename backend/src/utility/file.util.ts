@@ -13,3 +13,18 @@ export const renameImageWithName = async (filePath: string, name: string): Promi
     await fs.rename(filePath, newPath);
     return newFileName;
 }
+
+
+export const deleteImage = async(frontImagePath:string,backImagePath:string):Promise<void> =>{
+
+   try {
+    await Promise.allSettled([
+      fs.unlink(frontImagePath),
+      fs.unlink(backImagePath)
+    ]);
+    
+  } catch (error) {
+    throw new Error("Error while deleting image")
+  }
+
+}

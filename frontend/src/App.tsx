@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import { ThemeProvider } from './context/ThemeContext'; 
 import Header from './components/Header';
 import ImageUpload from './components/ImageUpload'; 

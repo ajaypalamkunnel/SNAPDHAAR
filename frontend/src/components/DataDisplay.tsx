@@ -1,15 +1,10 @@
 import React, { useState } from 'react';
 import { Copy, Check, Loader2, Scan } from 'lucide-react';
+import type { IAadhaarData } from '../interfaces/IAadhaar';
 
-interface ExtractedData {
-  name: string;
-  aadhaarNumber: string;
-  dateOfBirth: string;
-  address: string;
-}
 
 interface DataDisplayProps {
-  data: ExtractedData | null;
+  data: IAadhaarData | null;
   isLoading: boolean;
   onExtract: () => void;
   canExtract: boolean;
@@ -109,8 +104,13 @@ const DataDisplay: React.FC<DataDisplayProps> = ({
           field="aadhaarNumber" 
         />
         <DataField 
+          label="Gender" 
+          value={data?.gender || ''} 
+          field="gender" 
+        />
+        <DataField 
           label="Date of Birth" 
-          value={data?.dateOfBirth || ''} 
+          value={data?.dob || ''} 
           field="dateOfBirth" 
         />
         <DataField 
