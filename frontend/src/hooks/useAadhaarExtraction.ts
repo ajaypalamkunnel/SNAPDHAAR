@@ -1,40 +1,37 @@
-import { useState } from 'react';
-import type { IAadhaarData } from '../interfaces/IAadhaar';
-import { extractAadhaarData } from '../service/apiService';
-
+import { useState } from "react";
+import type { IAadhaarData } from "../interfaces/IAadhaar";
+import { extractAadhaarData } from "../service/apiService";
 
 export const useAadhaarExtraction = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [extractedData, setExtractedData] = useState<IAadhaarData | null>(null);
-   const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
-  const extractData = async (frontImage: File | null, backImage: File | null) => {
+  const extractData = async (
+    frontImage: File | null,
+    backImage: File | null
+  ) => {
     if (!frontImage || !backImage) return;
 
     setIsLoading(true);
-    setError(null)
+    setError(null);
 
     try {
-
-      console.log("hello");
       
 
-      const data = await extractAadhaarData(frontImage,backImage)
+      const data = await extractAadhaarData(frontImage, backImage);
 
-      console.log("====>",data);
       
-      setExtractedData(data)
-      
-    } catch (error:any) {
 
-      console.error('Error extracting Aadhaar data:', error);
-      setError(error.response?.data?.message || 'Failed to extract Aadhaar data.');
-      
-    }finally{
+      setExtractedData(data);
+    } catch (error: any) {
+      console.error("Error extracting Aadhaar data:", error);
+      setError(
+        error.response?.data?.message || "Failed to extract Aadhaar data."
+      );
+    } finally {
       setIsLoading(false);
     }
-
-
   };
 
   const resetData = () => {
@@ -45,6 +42,7 @@ export const useAadhaarExtraction = () => {
     isLoading,
     extractedData,
     extractData,
-    resetData
+    resetData,
+    error,
   };
 };

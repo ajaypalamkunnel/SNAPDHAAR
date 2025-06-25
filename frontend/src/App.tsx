@@ -8,7 +8,7 @@ import { useAadhaarExtraction } from './hooks/useAadhaarExtraction';
 function AppContent() {
   const [frontImage, setFrontImage] = useState<File | null>(null);
   const [backImage, setBackImage] = useState<File | null>(null);
-  const { isLoading, extractedData, extractData, resetData } = useAadhaarExtraction();
+  const { isLoading, extractedData, extractData, resetData,error } = useAadhaarExtraction();
 
   const handleFrontImageSelect = (file: File) => {
     setFrontImage(file);
@@ -94,6 +94,7 @@ function AppContent() {
                 isLoading={isLoading}
                 onExtract={handleExtract}
                 canExtract={canExtract}
+                error={error}
               />
             </div>
           </div>

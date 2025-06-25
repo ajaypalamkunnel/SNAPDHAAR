@@ -1,20 +1,21 @@
-import React, { useState } from 'react';
-import { Copy, Check, Loader2, Scan } from 'lucide-react';
-import type { IAadhaarData } from '../interfaces/IAadhaar';
-
+import React, { useState } from "react";
+import { Copy, Check, Loader2, Scan } from "lucide-react";
+import type { IAadhaarData } from "../interfaces/IAadhaar";
 
 interface DataDisplayProps {
   data: IAadhaarData | null;
   isLoading: boolean;
   onExtract: () => void;
   canExtract: boolean;
+  error?: string | null;
 }
 
-const DataDisplay: React.FC<DataDisplayProps> = ({ 
-  data, 
-  isLoading, 
-  onExtract, 
-  canExtract 
+const DataDisplay: React.FC<DataDisplayProps> = ({
+  data,
+  isLoading,
+  onExtract,
+  canExtract,
+  error,
 }) => {
   const [copiedField, setCopiedField] = useState<string | null>(null);
 
@@ -24,22 +25,22 @@ const DataDisplay: React.FC<DataDisplayProps> = ({
       setCopiedField(field);
       setTimeout(() => setCopiedField(null), 2000);
     } catch (err) {
-      console.error('Failed to copy text: ', err);
+      console.error("Failed to copy text: ", err);
     }
   };
 
-  const DataField: React.FC<{ label: string; value: string; field: string }> = ({ 
-    label, 
-    value, 
-    field 
-  }) => (
+  const DataField: React.FC<{
+    label: string;
+    value: string;
+    field: string;
+  }> = ({ label, value, field }) => (
     <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 space-y-2">
       <label className="block text-sm font-medium text-gray-600 dark:text-gray-400">
         {label}
       </label>
       <div className="flex items-center justify-between">
         <span className="text-gray-900 dark:text-gray-100 font-mono">
-          {value || 'Not extracted'}
+          {value || "Not extracted"}
         </span>
         {value && (
           <button
@@ -73,9 +74,10 @@ const DataDisplay: React.FC<DataDisplayProps> = ({
         onClick={onExtract}
         disabled={!canExtract || isLoading}
         className={`w-full py-3 px-6 rounded-xl font-semibold text-white transition-all duration-200 flex items-center justify-center space-x-2
-          ${canExtract && !isLoading
-            ? 'bg-[#05782d] hover:bg-green-700 hover:scale-[1.02] shadow-lg hover:shadow-xl'
-            : 'bg-gray-400 cursor-not-allowed'
+          ${
+            canExtract && !isLoading
+              ? "bg-[#05782d] hover:bg-green-700 hover:scale-[1.02] shadow-lg hover:shadow-xl"
+              : "bg-gray-400 cursor-not-allowed"
           }
         `}
       >
@@ -93,38 +95,37 @@ const DataDisplay: React.FC<DataDisplayProps> = ({
       </button>
 
       <div className="space-y-4">
-        <DataField 
-          label="Name" 
-          value={data?.name || ''} 
-          field="name" 
+        <DataField label="Name" value={data?.name || ""} field="name" />
+        <DataField
+          label="Aadhaar Number"
+          value={data?.aadhaarNumber || ""}
+          field="aadhaarNumber"
         />
-        <DataField 
-          label="Aadhaar Number" 
-          value={data?.aadhaarNumber || ''} 
-          field="aadhaarNumber" 
+        <DataField label="Gender" value={data?.gender || ""} field="gender" />
+        <DataField
+          label="Date of Birth"
+          value={data?.dob || ""}
+          field="dateOfBirth"
         />
-        <DataField 
-          label="Gender" 
-          value={data?.gender || ''} 
-          field="gender" 
-        />
-        <DataField 
-          label="Date of Birth" 
-          value={data?.dob || ''} 
-          field="dateOfBirth" 
-        />
-        <DataField 
-          label="Address" 
-          value={data?.address || ''} 
-          field="address" 
+        <DataField
+          label="Address"
+          value={data?.address || ""}
+          field="address"
         />
       </div>
 
       {data && (
         <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
           <p className="text-sm text-green-800 dark:text-green-200">
-            ✓ Data extracted successfully! You can copy individual fields using the copy buttons.
+            ✓ Data extracted successfully! You can copy individual fields using
+            the copy buttons.
           </p>
+        </div>
+      )}
+
+      {error && (
+        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-800 dark:text-red-200 rounded-lg p-4 text-sm">
+          ⚠️ {error}
         </div>
       )}
     </div>
